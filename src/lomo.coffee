@@ -1,8 +1,8 @@
 class @OverlappingMarkerOptimizer
   constructor: (@map, @markers, opts = {}) ->
-    this.legWeight = 1
+    this.legWeight = 2
     this.legColors = { 'usual': {}, 'highlighted': {} }
-    this['legColors']['usual'] = '#888'
+    this['legColors']['usual'] = '#000000'
     this['legColors']['highlighted'] = '#E53E55'
 
 
@@ -85,8 +85,9 @@ class @OverlappingMarkerOptimizer
       icon_options = marker.options.icon.options
       icon_options.iconAnchor = [anchorPosition, 8]
       icon = L.divIcon icon_options
-
       marker.setIcon icon
+      $('.item-pin .caret').hide()
+
       marker.setLatLng footLl
       ++i
 
@@ -115,6 +116,13 @@ class @OverlappingMarkerOptimizer
         @map.removeLayer marker['_omsData'].leg
         @map.removeLayer marker['_omsData'].circle
 
+        icon_options = marker.options.icon.options
+        # TODO: move options to constructor
+        icon_options.iconAnchor = [45, 20]
+        icon = L.divIcon icon_options
+        marker.setIcon icon
+        $('.item-pin .caret').show()
+
         marker.setLatLng marker['_omsData'].usualPosition
         marker.setZIndexOffset 0
         mhl = marker['_omsData'].highlightListeners
@@ -125,3 +133,9 @@ class @OverlappingMarkerOptimizer
       _i++
     delete @optimized
     this
+
+  toggle: ->
+    if @optimized
+      @restore()
+    else
+      @optimize()
