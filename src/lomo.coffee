@@ -91,8 +91,13 @@ class @OverlappingMarkerOptimizer
       marker.setLatLng footLl
       ++i
 
+  visibleMarkers: ->
+    @markers.filter((marker) ->
+      marker._icon
+    )
+
   optimize: ->
-    xGroups = @sortMarkersByX(@markers)
+    xGroups = @sortMarkersByX(@visibleMarkers())
     markersX1 = xGroups[0]
     markersX2 = xGroups[1]
 
@@ -107,7 +112,7 @@ class @OverlappingMarkerOptimizer
     if @optimized == null
       return this
 
-    _ref = @markers
+    _ref = @visibleMarkers()
     _i = 0
     _len = _ref.length
     while _i < _len
