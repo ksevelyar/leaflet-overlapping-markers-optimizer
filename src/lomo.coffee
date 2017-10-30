@@ -144,3 +144,8 @@ class @OverlappingMarkerOptimizer
       @restore()
     else
       @optimize()
+
+  redraw: ->
+    if @optimized
+      @restore()
+      @optimize()
